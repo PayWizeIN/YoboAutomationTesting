@@ -25,42 +25,34 @@ test.describe('🏦 Auth Service API Tests', () => {
     response: {}
   };
 
- test.beforeAll(async () => {
-    // 1. Get environment and CLEAN IT (trim removes hidden \r characters)
-    const rawEnv = process.env.TEST_ENV || 'dev';
-    const environment = rawEnv.trim().toLowerCase(); 
+test.beforeAll(async () => {
+    // 1. CLEAN THE ENVIRONMENT VARIABLE
+    // .trim() removes hidden Windows carriage returns (\r)
+    // .toLowerCase() fixes any Case Sensitivity issues on Linux
+    const rawEnv = (process.env.TEST_ENV || 'dev').trim().toLowerCase();
+    
+    // 2. BUILD THE PATH
+    // process.cwd() ensures we start from /var/lib/jenkins/workspace/Yobo-API-Testing
+    const fixtureFile = path.join(process.cwd(), 'api-tests', 'fixtures', rawEnv, `auth-service-${rawEnv}.json`);
 
-    // 2. Build the path using path.join or path.resolve (resolve is better for absolute paths)
-    const fixtureFile = path.resolve(
-      process.cwd(), 
-      'api-tests', 
-      'fixtures', 
-      environment, 
-      `${serviceName}-${environment}.json`
-    );
+    console.log(`[DEBUG] Final Resolved Path: "${fixtureFile}"`);
 
-    // 3. Log the path so you can see it in Jenkins Console Output
-    console.log(`[DEBUG] Workspace Root: ${process.cwd()}`);
-    console.log(`[DEBUG] Attempting to load: ${fixtureFile}`);
-
-    // 4. Safe Read
-    try {
-      const rawData = fs.readFileSync(fixtureFile, 'utf8');
-      testData = JSON.parse(rawData);
-    } catch (error) {
-      console.error(`\n❌ Failed to load fixture file!`);
-      console.error(`Checked Path: ${fixtureFile}`);
-      throw error;
+    // 3. CHECK IF FILE EXISTS BEFORE READING
+    if (!fs.existsSync(fixtureFile)) {
+        // This will print the exact folder content if it fails, so we can see the mistake
+        const dirPath = path.join(process.cwd(), 'api-tests', 'fixtures', rawEnv);
+        console.error(`❌ FOLDER CONTENT FOR ${dirPath}:`);
+        try { console.error(fs.readdirSync(dirPath)); } catch(e) { console.error("Folder itself not found"); }
+        throw new Error(`File Not Found at: ${fixtureFile}`);
     }
 
-    // Initialize API helper and config with sanitized environment
-    // apiHelper = new FintechApiHelper(environment);
-    // config = new EnvironmentConfig(environment);
+    const rawData = fs.readFileSync(fixtureFile, 'utf8');
+    testData = JSON.parse(rawData);
 
-    // console.log(`\n🏦 Service: ${serviceName.toUpperCase()}`);
-    // console.log(`🌍 Environment: ${environment.toUpperCase()}`);
-    // console.log(`🔗 Base URL: ${apiHelper.baseUrl}`);
+    //apiHelper = new FintechApiHelper(rawEnv);
+    //config = new EnvironmentConfig(rawEnv);
   });
+  
   // Test 1: Get Account Balance (Initial data fetch)
   test('1️⃣Validate Send OTP', async () => {
     console.log(`\n${'='.repeat(80)}`);
