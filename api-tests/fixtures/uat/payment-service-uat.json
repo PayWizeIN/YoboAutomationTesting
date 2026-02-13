@@ -1,0 +1,162 @@
+{
+  "Get payout overview": {
+    "method": "GET",
+    "endpoint": "/api/v1/accounts/staging-12345/balance",
+    "params": {"count":10},
+    "requestBody": null,
+    "expectedBody": {
+      "accountId": "staging-12345",
+      "availableBalance": "2500.75",
+      "currentBalance": "2650.00",
+      "pendingAmount": "150.00",
+      "currency": "USD",
+      "lastUpdated": "2024-01-15T10:30:00Z",
+      "accountDetails": {
+        "accountType": "checking",
+        "accountHolderName": "Staging User",
+        "bankDetails": {
+          "bankName": "Staging Test Bank",
+          "branchCode": "002",
+          "routingNumber": "021000022"
+        }
+      },
+      "recentTransactions": [
+        {
+          "transactionId": "stg_txn_001",
+          "amount": "100.00",
+          "type": "credit",
+          "description": "Staging Transfer"
+        }
+      ]
+    },
+    "expectedStatus": 200,
+    "expectedResponseTime": 2000,
+    "nonEmptyFields": ["accountId", "availableBalance", "currentBalance", "currency", "accountDetails.accountType"],
+    "validateAmounts": true,
+    "amountFields": ["availableBalance", "currentBalance", "pendingAmount"],
+    "validateDataMasking": true,
+    "sensitiveFields": ["bankDetails.routingNumber"]
+  },
+
+  "initiatePayment": {
+    "method": "POST",
+    "url": "/api/v1/payments",
+    "params": {},
+    "requestBody": {
+      "fromAccount": "staging-12345",
+      "toAccount": "staging-67890",
+      "amount": "250.00",
+      "currency": "USD",
+      "description": "Staging Payment for services",
+      "reference": "STG-INV-2024-001"
+    },
+    "expectedBody": {
+      "transactionId": "stg_txn_1234567890abcdef",
+      "status": "pending",
+      "amount": "250.00",
+      "currency": "USD",
+      "fromAccount": "staging-12345",
+      "toAccount": "staging-67890",
+      "createdAt": "2024-01-15T10:30:00Z",
+      "estimatedCompletionTime": "2024-01-15T10:35:00Z"
+    },
+    "expectedStatus": 201,
+    "expectedResponseTime": 3000,
+    "nonEmptyFields": ["transactionId", "status", "amount", "createdAt"],
+    "validateAmounts": true,
+    "amountFields": ["amount"],
+    "validateTransactionIds": true,
+    "transactionIdFields": ["transactionId"]
+  },
+
+  "getPaymentStatus": {
+    "method": "GET",
+    "url": "/api/v1/payments/stg_txn_001/status",
+    "params": {},
+    "requestBody": null,
+    "expectedBody": {
+      "transactionId": "stg_txn_001",
+      "status": "completed",
+      "statusUpdatedAt": "2024-01-15T10:35:00Z",
+      "completionDetails": {
+        "completedAt": "2024-01-15T10:35:00Z",
+        "settlementReference": "SET_STG_001",
+        "confirmationNumber": "CONF_67890"
+      }
+    },
+    "expectedStatus": 200,
+    "expectedResponseTime": 2000,
+    "nonEmptyFields": ["transactionId", "status", "statusUpdatedAt"],
+    "validateTransactionIds": true,
+    "transactionIdFields": ["transactionId"]
+  },
+
+  "getTransactionHistory": {
+    "method": "GET",
+    "url": "/api/v1/accounts/staging-12345/transactions",
+    "params": {
+      "limit": 10,
+      "offset": 0
+    },
+    "requestBody": null,
+    "expectedBody": {
+      "transactions": [
+        {
+          "transactionId": "stg_txn_001",
+          "type": "debit",
+          "amount": "100.00",
+          "currency": "USD",
+          "description": "Staging Payment",
+          "timestamp": "2024-01-15T10:30:00Z",
+          "status": "completed"
+        }
+      ],
+      "pagination": {
+        "total": 50,
+        "limit": 10,
+        "offset": 0,
+        "hasMore": true
+      }
+    },
+    "expectedStatus": 200,
+    "expectedResponseTime": 2500,
+    "nonEmptyFields": ["transactions", "pagination.total"],
+    "validateAmounts": true,
+    "amountFields": ["transactions.0.amount"],
+    "validateTransactionIds": true,
+    "transactionIdFields": ["transactions.0.transactionId"]
+  },
+
+  "unauthorizedAccessTest": {
+    "method": "GET",
+    "url": "/api/v1/admin/users",
+    "params": {},
+    "requestBody": null,
+    "expectedStatus": 401,
+    "expectedResponseTime": 1000,
+    "expectedBody": {
+      "error": "Unauthorized",
+      "errorCode": "AUTH_REQUIRED",
+      "message": "Valid authentication token required"
+    },
+    "nonEmptyFields": ["error", "errorCode"]
+  },
+
+  "rateLimitTest": {
+    "method": "GET",
+    "url": "/api/v1/accounts/staging-12345/balance",
+    "params": {},
+    "requestBody": null,
+    "requestCount": 10,
+    "expectedLimitStatus": 429,
+    "expectedStatus": 429,
+    "expectedResponseTime": 500,
+    "expectedBody": {
+      "error": "Rate limit exceeded",
+      "errorCode": "RATE_LIMIT_EXCEEDED",
+      "message": "Too many requests. Please try again later.",
+      "retryAfter": 60
+    },
+    "nonEmptyFields": ["error", "errorCode", "retryAfter"]
+  }
+}

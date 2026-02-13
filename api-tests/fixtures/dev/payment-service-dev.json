@@ -1,0 +1,93 @@
+{
+  "Get payout overview": {
+    "method": "GET",
+    "url": "payout/private/payout/overview",
+    "params": {
+        "date": "all",
+        "channel": "ALL"
+    },
+    "requestBody": null,
+    "expectedBody": {
+    "success": true,
+    "message": "success",
+    "data": {
+        "bankWallet": {
+            "total": "80024148.00",
+            "credit": "80200000.00",
+            "creditCount": 10,
+            "debit": "175852.00",
+            "debitCount": 60
+        },
+        "deposit": {
+            "success": "80200000.00",
+            "successCount": 10,
+            "pending": 0,
+            "pendingCount": 0
+        },
+        "vamDetails": {
+            "activeVam": 7,
+            "totalVam": 1001
+        },
+        "adminWallet": {
+            "total": "3014.49",
+            "credit": "3014.49",
+            "creditCount": 60,
+            "debit": 0,
+            "debitCount": 0
+        },
+        "manualStatusUpdate": {
+            "success": {
+                "count": 0,
+                "amount": 0
+            },
+            "failed": {
+                "count": 0,
+                "amount": 0
+            },
+            "refund": {
+                "count": 0,
+                "amount": 0
+            }
+        },
+        "systemStatusUpdate": {
+            "initiate": {
+                "count": 0,
+                "amount": 0
+            },
+            "success": {
+                "count": 60,
+                "amount": "175852.00"
+            },
+            "failed": {
+                "count": 0,
+                "amount": 0
+            },
+            "processing": {
+                "count": 0,
+                "amount": 0
+            },
+            "pending": {
+                "count": 0,
+                "amount": 0
+            }
+        },
+        "lienSummary": {
+            "totalAssignedAmount": "0.00",
+            "totalAssignedCount": 0,
+            "totalUnassignedAmount": "0.00",
+            "totalUnassignedCount": 0
+        }
+    }
+},
+    "expectedStatus": 200,
+    "expectedResponseTime": 2000,
+    "nonEmptyFields": [
+    ],
+    "validateAmounts": true,
+    "amountFields": [""],
+    "validateDataMasking": true,
+    "sensitiveFields": []
+  }
+
+
+}

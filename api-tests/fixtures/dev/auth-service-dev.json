@@ -1,0 +1,111 @@
+{
+    "Validate Send OTP": {
+        "method": "POST",
+        "url": "/auth/authenticate",
+        "params": {},
+        "requestBody": {
+            "channel": "WEB",
+            "authType": "PHONE_OTP",
+            "identifier": {
+                "phone": "8147752744",
+                "countryCode": "+91"
+            },
+            "device": {
+                "deviceId": "browser-123",
+                "platform": "WEB"
+            }
+        },
+        "expectedBody": {
+            "success": true,
+            "statusCode": 200,
+            "message": "Request processed successfully",
+            "data": {
+                "phase": "UNIFIED_OTP_SEND",
+                "otpSession": "OTP_MLJBN2G5_GTYPY7AAB25J1KX6",
+                "expiresAt": "2026-02-12T10:39:08.549Z",
+                "expiresInSeconds": 300,
+                "message": "Please enter your password to login.",
+                "phone": "+918147752744",
+                "decision": {
+                    "userExists": true,
+                    "suggestedFlow": "LOGIN",
+                    "nextStep": "ENTER_PASSWORD",
+                    "requiresOtp": false,
+                    "hasPassword": true,
+                    "hasMpin": false
+                }
+            },
+            "meta": {
+                "apiVersion": "v1",
+                "requestId": "req-c794-MWl9j",
+                "timestamp": "2026-02-12T10:34:08.551Z"
+            }
+        },
+        "expectedStatus": 200,
+        "expectedResponseTime": 1000,
+        "nonEmptyFields": [
+            "data.otpSession",
+            "data.expiresAt",
+            "meta.requestId",
+            "meta.timestamp"
+        ],
+        "validateAmounts": true,
+        "amountFields": [
+            ""
+        ],
+        "validateDataMasking": true,
+        "sensitiveFields": []
+    },
+    "Validate Send OTP_with_Invalid_Channel": {
+        "method": "POST",
+        "url": "/auth/authenticate",
+        "params": {},
+        "requestBody": {
+            "channel": "Test",
+            "authType": "PHONE_OTP",
+            "identifier": {
+                "phone": "8147752744",
+                "countryCode": "+91"
+            },
+            "device": {
+                "deviceId": "browser-123",
+                "platform": "WEB"
+            }
+        },
+        "expectedBody": {
+            "success": false,
+            "statusCode": 400,
+            "message": "Bad Request",
+            "error": {
+                "code": "BAD_REQUEST",
+                "category": "VALIDATION_ERROR",
+                "message": "One or more fields are invalid",
+                "retryable": false,
+                "errors": [
+                    {
+                        "field": "channel",
+                        "code": "VALIDATION_FAILED",
+                        "message": "Channel must be WEB, APP"
+                    }
+                ]
+            },
+            "meta": {
+                "apiVersion": "v1",
+                "requestId": "req-NJ5qPIGFeH",
+                "timestamp": "2026-02-12T10:50:09.527Z"
+            }
+        },
+        "expectedStatus": 400,
+        "expectedResponseTime": 1000,
+        "nonEmptyFields": [
+            "meta.requestId",
+            "meta.timestamp"
+        ],
+        "validateAmounts": true,
+        "amountFields": [
+            ""
+        ],
+        "validateDataMasking": true,
+        "sensitiveFields": []
+    }
+}
