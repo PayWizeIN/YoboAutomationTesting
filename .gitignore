@@ -21,7 +21,6 @@ reports/
 *.json
 
 # Environment
-.env
 .env.local
 .env.*.local
 
