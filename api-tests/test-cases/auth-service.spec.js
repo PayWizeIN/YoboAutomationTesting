@@ -25,39 +25,42 @@ test.describe('🏦 Auth Service API Tests', () => {
     response: {}
   };
 
-  test.beforeAll(async () => {
-    // Get environment from environment variable or default to 'dev'
-    const environment = process.env.TEST_ENV || 'dev';
+ test.beforeAll(async () => {
+    // 1. Get environment and CLEAN IT (trim removes hidden \r characters)
+    const rawEnv = process.env.TEST_ENV || 'dev';
+    const environment = rawEnv.trim().toLowerCase(); 
 
-    // Load service-specific environment test data
-    // Replace line 33 with this:
-    const fixtureFile = path.resolve(process.cwd(), 'api-tests', 'fixtures', environment, `${serviceName}-${environment}.json`);
+    // 2. Build the path using path.join or path.resolve (resolve is better for absolute paths)
+    const fixtureFile = path.resolve(
+      process.cwd(), 
+      'api-tests', 
+      'fixtures', 
+      environment, 
+      `${serviceName}-${environment}.json`
+    );
 
-    const rawData = fs.readFileSync(fixtureFile, 'utf8');
-    testData = JSON.parse(rawData);
+    // 3. Log the path so you can see it in Jenkins Console Output
+    console.log(`[DEBUG] Workspace Root: ${process.cwd()}`);
+    console.log(`[DEBUG] Attempting to load: ${fixtureFile}`);
 
-    // Initialize API helper and config with environment
-    apiHelper = new FintechApiHelper(environment);
-    config = new EnvironmentConfig(environment);
+    // 4. Safe Read
+    try {
+      const rawData = fs.readFileSync(fixtureFile, 'utf8');
+      testData = JSON.parse(rawData);
+    } catch (error) {
+      console.error(`\n❌ Failed to load fixture file!`);
+      console.error(`Checked Path: ${fixtureFile}`);
+      throw error;
+    }
 
-    console.log(`\n🏦 Service: ${serviceName.toUpperCase()}`);
-    console.log(`🌍 Environment: ${environment.toUpperCase()}`);
-    console.log(`🔗 Base URL: ${apiHelper.baseUrl}`);
+    // Initialize API helper and config with sanitized environment
+    // apiHelper = new FintechApiHelper(environment);
+    // config = new EnvironmentConfig(environment);
 
-    // Get credentials from config (super admin by default)
-    // const credentials = config.getAuthCredentials();
-
-    // Authenticate and get access token before running tests
-    // try {
-    //   // const accessToken = await apiHelper.authenticateAndGetToken(credentials);
-    //   console.log(`\n✅ Authentication successful! Ready to run tests.\n`);
-    // } catch (error) {
-    //   console.error(`\n❌ Authentication failed! Cannot proceed with tests.`);
-    //   console.error(`Error: ${error.message}\n`);
-    //   throw error;
-    // }
+    // console.log(`\n🏦 Service: ${serviceName.toUpperCase()}`);
+    // console.log(`🌍 Environment: ${environment.toUpperCase()}`);
+    // console.log(`🔗 Base URL: ${apiHelper.baseUrl}`);
   });
-
   // Test 1: Get Account Balance (Initial data fetch)
   test('1️⃣Validate Send OTP', async () => {
     console.log(`\n${'='.repeat(80)}`);
