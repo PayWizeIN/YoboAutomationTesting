@@ -26,7 +26,7 @@ class EnvironmentConfig {
    */
   getApiBaseUrl() {
     // Using the actual cashwize API endpoint
-    return process.env.API_BASE_URL || 'https://dev.yobope.com/api/v1';
+    return process.env.API_BASE_URL || 'https://104.21.12.121/api/v1';
   }
 
   /**
