@@ -17,7 +17,7 @@
         },
         "expectedBody": {
             "success": true,
-            "statusCode": 300,
+            "statusCode": 200,
             "message": "Request processed successfully",
             "data": {
                 "phase": "UNIFIED_OTP_SEND",
