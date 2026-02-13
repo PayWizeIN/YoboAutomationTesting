@@ -3,28 +3,22 @@ pipeline {
     tools {
         nodejs 'NodeJS_20_LTS'
     }
+    environment {
+        // Essential for your auth-service.spec.js to find the right files/URLs
+        TEST_ENV = 'dev'
+        API_DEV_BASE_URL = 'https://api-dev.yobo.com' 
+        // IMPORTANT: Add any other vars your .env usually has
+    }
     stages {
-        stage('Cleanup') {
-            steps {
-                deleteDir()
-            }
-        }
-        stage('Fetch Code') {
-            steps {
-                checkout scm
-                sh 'sleep 2' // Give the filesystem a moment
-                sh 'ls -la'  // Show hidden files and permissions
-            }
-        }
         stage('Install') {
             steps {
-                // If package.json is in the root, this should work
                 sh 'npm install'
             }
         }
         stage('Test') {
             steps {
-                sh 'npm run api:dev' 
+                // This command sets the environment variable for the run
+                sh 'npm run api:dev'
             }
         }
     }
