@@ -2,7 +2,7 @@ pipeline {
     agent any
     
     tools {
-        nodejs 'node' // Must match the name in Manage Jenkins -> Tools
+        nodejs 'NodeJS_20_LTS' // Must match the name in Manage Jenkins -> Tools
     }
 
     environment {
