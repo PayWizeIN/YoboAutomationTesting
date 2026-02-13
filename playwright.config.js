@@ -36,46 +36,53 @@ module.exports = defineConfig({
     video: 'retain-on-failure',
   },
 
-  /* Configure projects for multiple browsers */
+  /* Configure projects for API and E2E tests */
   projects: [
-    // Desktop Browsers
+    // API Tests - Run once (no browser needed)
     {
-      name: 'chromium',
+      name: 'api-tests',
+      testMatch: '**/api-tests/**/*.spec.js',
+      use: {
+        // API tests don't need browser context
+      },
+    },
+
+    // E2E Tests - Run on multiple browsers
+    {
+      name: 'e2e-chromium',
+      testMatch: '**/e2e-tests/**/*.spec.js',
       use: {
         ...devices['Desktop Chrome'],
-        // Browser-specific settings
         viewport: { width: 1920, height: 1080 },
       },
     },
     {
-      name: 'firefox',
+      name: 'e2e-firefox',
+      testMatch: '**/e2e-tests/**/*.spec.js',
       use: {
         ...devices['Desktop Firefox'],
         viewport: { width: 1920, height: 1080 },
       },
     },
     {
-      name: 'webkit',
+      name: 'e2e-webkit',
+      testMatch: '**/e2e-tests/**/*.spec.js',
       use: {
         ...devices['Desktop Safari'],
         viewport: { width: 1920, height: 1080 },
       },
     },
 
-    // Mobile Browsers (Optional - uncomment to enable)
+    // Mobile Browsers for E2E (Optional - uncomment to enable)
     // {
-    //   name: 'mobile-chrome',
+    //   name: 'e2e-mobile-chrome',
+    //   testMatch: '**/e2e-tests/**/*.spec.js',
     //   use: { ...devices['Pixel 5'] },
     // },
     // {
-    //   name: 'mobile-safari',
+    //   name: 'e2e-mobile-safari',
+    //   testMatch: '**/e2e-tests/**/*.spec.js',
     //   use: { ...devices['iPhone 13'] },
-    // },
-
-    // Tablet (Optional - uncomment to enable)
-    // {
-    //   name: 'tablet',
-    //   use: { ...devices['iPad Pro'] },
     // },
   ],
 
