@@ -1,0 +1,69 @@
+{
+  "name": "yobo-automation-testing",
+  "version": "1.0.0",
+  "description": "Comprehensive Playwright automation framework for Yobo fintech with API and UI testing",
+  "main": "index.js",
+  "scripts": {
+    "install-browsers": "playwright install",
+    
+    "api": "TEST_ENV=${TEST_ENV:-dev} playwright test api-tests/test-cases",
+    "api:dev": "TEST_ENV=dev playwright test api-tests/test-cases",
+    "api:uat": "TEST_ENV=uat playwright test api-tests/test-cases",
+    "api:dev:ui": "TEST_ENV=dev playwright test api-tests/test-cases --ui",
+    "api:uat:ui": "TEST_ENV=uat playwright test api-tests/test-cases --ui",
+    "api:dev:headed": "TEST_ENV=dev playwright test api-tests/test-cases --headed",
+    "api:uat:headed": "TEST_ENV=uat playwright test api-tests/test-cases --headed",
+    "api:dev:debug": "TEST_ENV=dev playwright test api-tests/test-cases --debug",
+    "api:uat:debug": "TEST_ENV=uat playwright test api-tests/test-cases --debug",
+    
+    "api:payment": "TEST_ENV=dev playwright test api-tests/test-cases/payment-service.spec.js",
+    "api:settlement": "TEST_ENV=dev playwright test api-tests/test-cases/settlement-service.spec.js",
+    
+    "api:parallel": "TEST_ENV=${TEST_ENV:-dev} playwright test api-tests/test-cases --workers=4",
+    "api:sequential": "TEST_ENV=${TEST_ENV:-dev} playwright test api-tests/test-cases --workers=1",
+    
+    "e2e:dev": "playwright test e2e-tests --env=dev",
+    "e2e:uat": "playwright test e2e-tests --env=uat",
+    "e2e:dev:ui": "playwright test e2e-tests --env=dev --ui",
+    "e2e:uat:ui": "playwright test e2e-tests --env=uat --ui",
+    "e2e:dev:headed": "playwright test e2e-tests --env=dev --headed",
+    "e2e:uat:headed": "playwright test e2e-tests --env=uat --headed",
+    
+    "test": "playwright test",
+    "test:dev": "playwright test --env=dev",
+    "test:uat": "playwright test --env=uat",
+    "test:ui": "playwright test --ui",
+    "test:headed": "playwright test --headed",
+    "test:debug": "playwright test --debug",
+    
+    "report": "playwright show-report",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "prettier": "prettier --write ."
+  },
+  "keywords": [
+    "playwright",
+    "automation",
+    "testing",
+    "fintech",
+    "api",
+    "e2e",
+    "yobo"
+  ],
+  "author": "Yobo QA Team",
+  "license": "MIT",
+  "devDependencies": {
+    "@playwright/test": "^1.40.1",
+    "@types/node": "^20.10.6",
+    "axios": "^1.6.5",
+    "dotenv": "^16.3.1",
+    "eslint": "^8.56.0",
+    "prettier": "^3.1.1",
+    "allure-playwright": "^2.11.1",
+    "allure-commandline": "^2.25.0"
+  },
+  "dependencies": {
+    "js-sha256": "^0.11.0",
+    "uuid": "^9.0.1"
+  }
+}
