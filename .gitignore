@@ -1,0 +1,44 @@
+# .gitignore
+
+# Dependencies
+node_modules/
+npm-debug.log
+yarn-error.log
+package-lock.json
+yarn.lock
+
+# Playwright
+.auth/
+test-results/
+playwright-report/
+blob-report/
+playwright/.cache/
+
+# Reports
+reports/
+*.html
+*.xml
+*.json
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# OS
+Thumbs.db
+.DS_Store
+*.log
+
+# Test artifacts
+screenshots/
+videos/
+traces/
