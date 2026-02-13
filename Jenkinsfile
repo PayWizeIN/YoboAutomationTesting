@@ -1,53 +1,32 @@
 pipeline {
     agent any
-    
     tools {
-        nodejs 'node' // Must match the name in Manage Jenkins -> Tools
+        nodejs 'NodeJS_20_LTS'
     }
-
     environment {
-        // We inject these so you don't need a .env file on the Jenkins server
+        // Essential for your auth-service.spec.js to find the right files/URLs
+        TEST_ENV = 'dev'
         API_DEV_BASE_URL = 'https://api-dev.yobo.com' 
-        // Add other necessary variables here or via Jenkins Credentials
+        // IMPORTANT: Add any other vars your .env usually has
     }
-
     stages {
-        stage('Cleanup') {
-            steps {
-                deleteDir() // Clean workspace to avoid old file conflicts
-            }
-        }
-
-        stage('Fetch Code') {
-            steps {
-                checkout scm
-            }
-        }
-
-        stage('Install Dependencies') {
+        stage('Install') {
             steps {
                 sh 'npm install'
-                // Based on your README, you need to install browsers too
-                sh 'npm run install-browsers'
             }
         }
-
-        stage('Execute API Tests') {
+        stage('Test') {
             steps {
-                // We use the headless version of your command
-                // If 'api:dev' is your headless command:
+                // This command sets the environment variable for the run
                 sh 'npm run api:dev'
             }
         }
     }
-
     post {
         always {
-            // Updated to match your README's report location
             publishHTML(target: [
                 alwaysLinkToLastBuild: true,
-                keepAll: true,
-                reportDir: 'api-tests/reports/html', 
+                reportDir: 'api-tests/reports/html',
                 reportFiles: 'index.html',
                 reportName: 'Playwright API Report'
             ])
