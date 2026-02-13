@@ -1,7 +1,7 @@
 pipeline {
     agent any
     tools {
-        nodejs 'node'
+        nodejs 'NodeJS_20_LTS'
     }
     stages {
         stage('Cleanup') {
