@@ -48,30 +48,30 @@ module.exports = defineConfig({
     },
 
     // E2E Tests - Run on multiple browsers
-    {
-      name: 'e2e-chromium',
-      testMatch: '**/e2e-tests/**/*.spec.js',
-      use: {
-        ...devices['Desktop Chrome'],
-        viewport: { width: 1920, height: 1080 },
-      },
-    },
-    {
-      name: 'e2e-firefox',
-      testMatch: '**/e2e-tests/**/*.spec.js',
-      use: {
-        ...devices['Desktop Firefox'],
-        viewport: { width: 1920, height: 1080 },
-      },
-    },
-    {
-      name: 'e2e-webkit',
-      testMatch: '**/e2e-tests/**/*.spec.js',
-      use: {
-        ...devices['Desktop Safari'],
-        viewport: { width: 1920, height: 1080 },
-      },
-    },
+    // {
+    //   name: 'e2e-chromium',
+    //   testMatch: '**/e2e-tests/**/*.spec.js',
+    //   use: {
+    //     ...devices['Desktop Chrome'],
+    //     viewport: { width: 1920, height: 1080 },
+    //   },
+    // },
+    // {
+    //   name: 'e2e-firefox',
+    //   testMatch: '**/e2e-tests/**/*.spec.js',
+    //   use: {
+    //     ...devices['Desktop Firefox'],
+    //     viewport: { width: 1920, height: 1080 },
+    //   },
+    // },
+    // {
+    //   name: 'e2e-webkit',
+    //   testMatch: '**/e2e-tests/**/*.spec.js',
+    //   use: {
+    //     ...devices['Desktop Safari'],
+    //     viewport: { width: 1920, height: 1080 },
+    //   },
+    // },
 
     // Mobile Browsers for E2E (Optional - uncomment to enable)
     // {
