@@ -30,7 +30,8 @@ test.describe('🏦 Auth Service API Tests', () => {
     const environment = process.env.TEST_ENV || 'dev';
 
     // Load service-specific environment test data
-    const fixtureFile = path.join(__dirname, '..', 'fixtures', environment, `${serviceName}-${environment}.json`);
+    // Replace line 33 with this:
+    const fixtureFile = path.resolve(process.cwd(), 'api-tests', 'fixtures', environment, `${serviceName}-${environment}.json`);
 
     const rawData = fs.readFileSync(fixtureFile, 'utf8');
     testData = JSON.parse(rawData);

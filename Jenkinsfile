@@ -16,11 +16,12 @@ pipeline {
             }
         }
         stage('Test') {
-            steps {
-                // This command sets the environment variable for the run
-                sh 'npm run api:dev'
-            }
-        }
+    steps {
+        // This will show us exactly what files exist in that folder
+        sh 'ls -R api-tests/fixtures/' 
+        sh 'npm run api:dev'
+    }
+}
     }
     post {
         always {
