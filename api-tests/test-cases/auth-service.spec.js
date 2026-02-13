@@ -76,4 +76,14 @@ test.describe('🏦 Auth Service API Tests', () => {
     console.log(`${'='.repeat(80)}\n`);
   });
 
+  test('Validate Send OTP with Invalid phone number', async () => {
+    console.log(`\n${'='.repeat(80)}`);
+    console.log(`🧪 TEST 2: Validate Send OTP with Invalid phone number`);
+    console.log(`${'='.repeat(80)}`);
+
+    const response = await apiHelper.makeApiRequest(testData['Validate Send OTP with Invalid phone number'], "");
+
+    console.log(`${'='.repeat(80)}\n`);
+  });
+
 });

@@ -107,5 +107,57 @@
         ],
         "validateDataMasking": true,
         "sensitiveFields": []
+    },
+    "Validate Send OTP with Invalid phone number": {
+        "method": "POST",
+        "url": "/auth/authenticate",
+        "params": {},
+        "requestBody": {
+            "channel": "WEB",
+            "authType": "PHONE_OTP",
+            "identifier": {
+                "phone": "12345",
+                "countryCode": "+91"
+            },
+            "device": {
+                "deviceId": "browser-123",
+                "platform": "WEB"
+            }
+        },
+        "expectedBody": {
+            "success": false,
+            "statusCode": 400,
+            "message": "Bad Request",
+            "error": {
+                "code": "BAD_REQUEST",
+                "category": "VALIDATION_ERROR",
+                "message": "One or more fields are invalid",
+                "retryable": false,
+                "errors": [
+                    {
+                        "field": "invalid",
+                        "code": "VALIDATION_FAILED",
+                        "message": "Invalid phone number format"
+                    }
+                ]
+            },
+            "meta": {
+                "apiVersion": "v1",
+                "requestId": "req-1J9ZUpOeZt",
+                "timestamp": "2026-02-13T10:13:44.936Z"
+            }
+        },
+        "expectedStatus": 400,
+        "expectedResponseTime": 1000,
+        "nonEmptyFields": [
+            "meta.requestId",
+            "meta.timestamp"
+        ],
+        "validateAmounts": true,
+        "amountFields": [
+            ""
+        ],
+        "validateDataMasking": true,
+        "sensitiveFields": []
     }
 }
