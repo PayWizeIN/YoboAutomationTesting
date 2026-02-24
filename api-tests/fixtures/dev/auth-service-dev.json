@@ -1,5 +1,5 @@
 {
-    "Validate Send OTP": {
+    "Validate send otp functionality with valid data": {
         "method": "POST",
         "url": "/auth/authenticate",
         "params": {},
@@ -21,24 +21,32 @@
             "message": "Request processed successfully",
             "data": {
                 "phase": "UNIFIED_OTP_SEND",
-                "otpSession": "OTP_MLJBN2G5_GTYPY7AAB25J1KX6",
-                "expiresAt": "2026-02-12T10:39:08.549Z",
+                "otpSession": "OTP_MLZ7SOMX_2-YGIVEYJCFYIPHC",
+                "expiresAt": "2026-02-23T13:35:50.938Z",
                 "expiresInSeconds": 300,
-                "message": "Please enter your password to login.",
-                "phone": "+918147752744",
+                "message": "Please verify your phone number to create an account.",
+                "phone": "+919239986545",
+                "userState": {
+                    "isNewUser": true,
+                    "hasMpin": false,
+                    "hasPassword": false,
+                    "nextStep": "VERIFY_PHONE",
+                    "flowCode": "AUTH_WEB",
+                    "currentStepCode": "PENDING"
+                },
                 "decision": {
-                    "userExists": true,
-                    "suggestedFlow": "LOGIN",
-                    "nextStep": "ENTER_PASSWORD",
-                    "requiresOtp": false,
-                    "hasPassword": true,
+                    "userExists": false,
+                    "suggestedFlow": "SIGNUP",
+                    "nextStep": "VERIFY_PHONE",
+                    "requiresOtp": true,
+                    "hasPassword": false,
                     "hasMpin": false
                 }
             },
             "meta": {
                 "apiVersion": "v1",
-                "requestId": "req-c794-MWl9j",
-                "timestamp": "2026-02-12T10:34:08.551Z"
+                "requestId": "req-CbkMPSo-mO",
+                "timestamp": "2026-02-23T13:30:51.172Z"
             }
         },
         "expectedStatus": 200,
@@ -64,7 +72,7 @@
             "channel": "Test",
             "authType": "PHONE_OTP",
             "identifier": {
-                "phone": "8147752744",
+                "phone": "9876543210",
                 "countryCode": "+91"
             },
             "device": {
@@ -116,7 +124,7 @@
             "channel": "WEB",
             "authType": "PHONE_OTP",
             "identifier": {
-                "phone": "12345",
+                "phone": "81752744",
                 "countryCode": "+91"
             },
             "device": {
@@ -135,16 +143,16 @@
                 "retryable": false,
                 "errors": [
                     {
-                        "field": "invalid",
+                        "field": "phone",
                         "code": "VALIDATION_FAILED",
-                        "message": "Invalid phone number format"
+                        "message": "Phone number must be 10 digits starting with 6-9"
                     }
                 ]
             },
             "meta": {
                 "apiVersion": "v1",
-                "requestId": "req-1J9ZUpOeZt",
-                "timestamp": "2026-02-13T10:13:44.936Z"
+                "requestId": "req-liwP7R6si0",
+                "timestamp": "2026-02-24T11:16:38.845Z"
             }
         },
         "expectedStatus": 400,

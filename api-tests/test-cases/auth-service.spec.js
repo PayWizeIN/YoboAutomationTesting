@@ -53,13 +53,24 @@ test.describe('🏦 Auth Service API Tests', () => {
     config = new EnvironmentConfig(rawEnv);
   });
 
-  // Test 1: Get Account Balance (Initial data fetch)
-  test('1️⃣Validate Send OTP', async () => {
+  // Validate send otp functionality with valid data
+  //YOBO-T4
+  test('1️⃣Validate send otp functionality with valid data', async () => {
     console.log(`\n${'='.repeat(80)}`);
-    console.log(`🧪 TEST 1: Validate Send OTP`);
+    console.log(`🧪 TEST 1: Validate send otp functionality with valid data`);
     console.log(`${'='.repeat(80)}`);
 
-    const response = await apiHelper.makeApiRequest(testData['Validate Send OTP'], "");
+    const mobileNumber = apiHelper.generateMobileNumber();
+    const requestPayload = JSON.parse(
+      JSON.stringify(testData['Validate send otp functionality with valid data'])
+    );
+
+    // Step 3: Update phone field
+    requestPayload.requestBody.identifier.phone = mobileNumber;
+    requestPayload.expectedBody.data.phone = "+91" + mobileNumber;
+    console.log(`📱 Using Mobile Number: ${mobileNumber}`);
+    const response = await apiHelper.makeApiRequest(requestPayload, "");
+
     otpSession = response?.data?.otpSession;
     console.log(`\n✅ [PASSED] OTP Session Retrieved: ${otpSession}`);
     console.log(`📌 Stored in otpSession for use in next tests`);
