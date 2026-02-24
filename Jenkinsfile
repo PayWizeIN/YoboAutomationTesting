@@ -1,7 +1,7 @@
 pipeline {
     agent any
     tools {
-        nodejs 'NodeJS_20_LTS'
+        nodejs 'node24'
     }
     stages {
         stage('Fetch & Inspect') {
