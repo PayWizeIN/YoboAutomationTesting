@@ -8,7 +8,7 @@
     "api": "TEST_ENV=${TEST_ENV:-dev} playwright test api-tests/test-cases",
     "api:dev": "cross-env TEST_ENV=dev playwright test api-tests/test-cases",
     "api:uat": "TEST_ENV=uat playwright test api-tests/test-cases",
-    "api:dev:ui": "cross-env TEST_ENV=dev playwright test api-tests/test-cases --ui",
+    "api:dev:ui:win": "cross-env TEST_ENV=dev playwright test api-tests/test-cases --ui",
     "api:uat:ui": "TEST_ENV=uat playwright test api-tests/test-cases --ui",
     "api:dev:headed": "TEST_ENV=dev playwright test api-tests/test-cases --headed",
     "api:uat:headed": "TEST_ENV=uat playwright test api-tests/test-cases --headed",
