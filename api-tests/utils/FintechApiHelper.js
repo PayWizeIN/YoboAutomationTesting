@@ -894,12 +894,10 @@ class FintechApiHelper {
   }
 
   generateMobileNumber() {
-    let mobile = "9";
-    for (let i = 0; i < 9; i++) {
-      mobile += Math.floor(Math.random() * 10);
-    }
-    return mobile;
-  }
+  const firstDigit = Math.floor(Math.random() * 4) + 6; // 6-9
+  const remainingDigits = Math.floor(100000000 + Math.random() * 900000000);
+  return `${firstDigit}${remainingDigits}`.slice(0, 10);
+}
 }
 
 module.exports = FintechApiHelper;

@@ -17,7 +17,7 @@
         },
         "expectedBody": {
             "success": true,
-            "statusCode": 300,
+            "statusCode": 200,
             "message": "Request processed successfully",
             "data": {
                 "phase": "UNIFIED_OTP_SEND",
@@ -160,6 +160,1329 @@
         "nonEmptyFields": [
             "meta.requestId",
             "meta.timestamp"
+        ],
+        "validateAmounts": true,
+        "amountFields": [
+            ""
+        ],
+        "validateDataMasking": true,
+        "sensitiveFields": []
+    },
+    "Verify error when phone number is missing": {
+        "method": "POST",
+        "url": "/auth/authenticate",
+        "params": {},
+        "requestBody": {
+            "channel": "WEB",
+            "authType": "PHONE_OTP",
+            "identifier": {
+                "phone": "",
+                "countryCode": "+9"
+            },
+            "device": {
+                "deviceId": "browser-123",
+                "platform": "WEB"
+            }
+        },
+        "expectedBody": {
+            "success": false,
+            "statusCode": 400,
+            "message": "Bad Request",
+            "error": {
+                "code": "BAD_REQUEST",
+                "category": "VALIDATION_ERROR",
+                "message": "One or more fields are invalid",
+                "retryable": false,
+                "errors": [
+                    {
+                        "field": "phone",
+                        "code": "VALIDATION_FAILED",
+                        "message": "Phone number must be 10 digits starting with 6-9"
+                    }
+                ]
+            },
+            "meta": {
+                "apiVersion": "v1",
+                "requestId": "req-PVOHe13VKh",
+                "timestamp": "2026-02-24T11:30:02.110Z"
+            }
+        },
+        "expectedStatus": 400,
+        "expectedResponseTime": 1000,
+        "nonEmptyFields": [
+            "meta.requestId",
+            "meta.timestamp"
+        ],
+        "validateAmounts": true,
+        "amountFields": [
+            ""
+        ],
+        "validateDataMasking": true,
+        "sensitiveFields": []
+    },
+    "Verify error when countryCode missing": {
+        "method": "POST",
+        "url": "/auth/authenticate",
+        "params": {},
+        "requestBody": {
+            "channel": "WEB",
+            "authType": "PHONE_OTP",
+            "identifier": {
+                "phone": "9353788831",
+                "countryCode": ""
+            },
+            "device": {
+                "deviceId": "browser-123",
+                "platform": "WEB"
+            }
+        },
+        "expectedBody": {
+            "success": false,
+            "statusCode": 400,
+            "message": "Bad Request",
+            "error": {
+                "code": "BAD_REQUEST",
+                "category": "VALIDATION_ERROR",
+                "message": "One or more fields are invalid",
+                "retryable": false,
+                "errors": [
+                    {
+                        "field": "invalid",
+                        "code": "VALIDATION_FAILED",
+                        "message": "Invalid country code format (e.g., +91)"
+                    }
+                ]
+            },
+            "meta": {
+                "apiVersion": "v1",
+                "requestId": "req-K44th0YFVE",
+                "timestamp": "2026-02-24T11:38:29.525Z"
+            }
+        },
+        "expectedStatus": 400,
+        "expectedResponseTime": 1000,
+        "nonEmptyFields": [
+            "meta.requestId",
+            "meta.timestamp"
+        ],
+        "validateAmounts": true,
+        "amountFields": [
+            ""
+        ],
+        "validateDataMasking": true,
+        "sensitiveFields": []
+    },
+    "Verify error when channel missing": {
+        "method": "POST",
+        "url": "/auth/authenticate",
+        "params": {},
+        "requestBody": {
+            "channel": "WEB",
+            "authType": "PHONE_OTP",
+            "identifier": {
+                "phone": "9353788831",
+                "countryCode": "91"
+            },
+            "device": {
+                "deviceId": "browser-123",
+                "platform": "WEB"
+            }
+        },
+        "expectedBody": {
+            "success": false,
+            "statusCode": 400,
+            "message": "Bad Request",
+            "error": {
+                "code": "BAD_REQUEST",
+                "category": "VALIDATION_ERROR",
+                "message": "One or more fields are invalid",
+                "retryable": false,
+                "errors": [
+                    {
+                        "field": "invalid",
+                        "code": "VALIDATION_FAILED",
+                        "message": "Invalid country code format (e.g., +91)"
+                    }
+                ]
+            },
+            "meta": {
+                "apiVersion": "v1",
+                "requestId": "req-1sd0j5-64K",
+                "timestamp": "2026-02-24T12:08:09.861Z"
+            }
+        },
+        "expectedStatus": 400,
+        "expectedResponseTime": 1000,
+        "nonEmptyFields": [
+            "meta.requestId",
+            "meta.timestamp"
+        ],
+        "validateAmounts": true,
+        "amountFields": [
+            ""
+        ],
+        "validateDataMasking": true,
+        "sensitiveFields": []
+    },
+    "Verify phone number minimum length must be 10 digits": {
+        "method": "POST",
+        "url": "/auth/authenticate",
+        "params": {},
+        "requestBody": {
+            "channel": "WEB",
+            "authType": "PHONE_OTP",
+            "identifier": {
+                "phone": "9353789",
+                "countryCode": "+91"
+            },
+            "device": {
+                "deviceId": "browser-123",
+                "platform": "WEB"
+            }
+        },
+        "expectedBody": {
+            "success": false,
+            "statusCode": 400,
+            "message": "Bad Request",
+            "error": {
+                "code": "BAD_REQUEST",
+                "category": "VALIDATION_ERROR",
+                "message": "One or more fields are invalid",
+                "retryable": false,
+                "errors": [
+                    {
+                        "field": "phone",
+                        "code": "VALIDATION_FAILED",
+                        "message": "Phone number must be 10 digits starting with 6-9"
+                    }
+                ]
+            },
+            "meta": {
+                "apiVersion": "v1",
+                "requestId": "req-rMAykG1K95",
+                "timestamp": "2026-02-25T12:46:45.708Z"
+            }
+        },
+        "expectedStatus": 400,
+        "expectedResponseTime": 1000,
+        "nonEmptyFields": [
+            "meta.requestId",
+            "meta.timestamp"
+        ],
+        "validateAmounts": true,
+        "amountFields": [
+            ""
+        ],
+        "validateDataMasking": true,
+        "sensitiveFields": []
+    },
+    "Verify phone number maximum length restricted to 10 digits": {
+        "method": "POST",
+        "url": "/auth/authenticate",
+        "params": {},
+        "requestBody": {
+            "channel": "WEB",
+            "authType": "PHONE_OTP",
+            "identifier": {
+                "phone": "9353789",
+                "countryCode": "+91"
+            },
+            "device": {
+                "deviceId": "browser-123",
+                "platform": "WEB"
+            }
+        },
+        "expectedBody": {
+            "success": false,
+            "statusCode": 400,
+            "message": "Bad Request",
+            "error": {
+                "code": "BAD_REQUEST",
+                "category": "VALIDATION_ERROR",
+                "message": "One or more fields are invalid",
+                "retryable": false,
+                "errors": [
+                    {
+                        "field": "phone",
+                        "code": "VALIDATION_FAILED",
+                        "message": "Phone number must be 10 digits starting with 6-9"
+                    }
+                ]
+            },
+            "meta": {
+                "apiVersion": "v1",
+                "requestId": "req-rMAykG1K95",
+                "timestamp": "2026-02-25T12:46:45.708Z"
+            }
+        },
+        "expectedStatus": 400,
+        "expectedResponseTime": 1000,
+        "nonEmptyFields": [
+            "meta.requestId",
+            "meta.timestamp"
+        ],
+        "validateAmounts": true,
+        "amountFields": [
+            ""
+        ],
+        "validateDataMasking": true,
+        "sensitiveFields": []
+    },
+    "Verify phone number should start with digits between 6-9": {
+        "method": "POST",
+        "url": "/auth/authenticate",
+        "params": {},
+        "requestBody": {
+            "channel": "WEB",
+            "authType": "PHONE_OTP",
+            "identifier": {
+                "phone": "1353789831",
+                "countryCode": "+91"
+            },
+            "device": {
+                "deviceId": "browser-123",
+                "platform": "WEB"
+            }
+        },
+        "expectedBody": {
+            "success": false,
+            "statusCode": 400,
+            "message": "Bad Request",
+            "error": {
+                "code": "BAD_REQUEST",
+                "category": "VALIDATION_ERROR",
+                "message": "One or more fields are invalid",
+                "retryable": false,
+                "errors": [
+                    {
+                        "field": "phone",
+                        "code": "VALIDATION_FAILED",
+                        "message": "Phone number must be 10 digits starting with 6-9"
+                    }
+                ]
+            },
+            "meta": {
+                "apiVersion": "v1",
+                "requestId": "req-wXnQfnK62t",
+                "timestamp": "2026-02-26T04:50:14.938Z"
+            }
+        },
+        "expectedStatus": 400,
+        "expectedResponseTime": 1000,
+        "nonEmptyFields": [
+            "meta.requestId",
+            "meta.timestamp"
+        ],
+        "validateAmounts": true,
+        "amountFields": [
+            ""
+        ],
+        "validateDataMasking": true,
+        "sensitiveFields": []
+    },
+    "Verify phone field should not accept country code prefix": {
+        "method": "POST",
+        "url": "/auth/authenticate",
+        "params": {},
+        "requestBody": {
+            "channel": "WEB",
+            "authType": "PHONE_OTP",
+            "identifier": {
+                "phone": "+919353788831",
+                "countryCode": "+91"
+            },
+            "device": {
+                "deviceId": "browser-123",
+                "platform": "WEB"
+            }
+        },
+        "expectedBody": {
+            "success": false,
+            "statusCode": 400,
+            "message": "Bad Request",
+            "error": {
+                "code": "BAD_REQUEST",
+                "category": "VALIDATION_ERROR",
+                "message": "One or more fields are invalid",
+                "retryable": false,
+                "errors": [
+                    {
+                        "field": "phone",
+                        "code": "VALIDATION_FAILED",
+                        "message": "Phone number must be 10 digits starting with 6-9"
+                    }
+                ]
+            },
+            "meta": {
+                "apiVersion": "v1",
+                "requestId": "req-7oLsXTDcBu",
+                "timestamp": "2026-02-26T04:52:37.102Z"
+            }
+        },
+        "expectedStatus": 400,
+        "expectedResponseTime": 1000,
+        "nonEmptyFields": [
+            "meta.requestId",
+            "meta.timestamp"
+        ],
+        "validateAmounts": true,
+        "amountFields": [
+            ""
+        ],
+        "validateDataMasking": true,
+        "sensitiveFields": []
+    },
+    "Verify API rejects GET method": {
+        "method": "GET",
+        "url": "/auth/authenticate",
+        "params": {},
+        "requestBody": {
+            "channel": "WEB",
+            "authType": "PHONE_OTP",
+            "identifier": {
+                "phone": "9353788831",
+                "countryCode": "+91"
+            },
+            "device": {
+                "deviceId": "browser-123",
+                "platform": "WEB"
+            }
+        },
+        "expectedBody": {
+            "success": false,
+            "statusCode": 404,
+            "message": "Not Found",
+            "error": {
+                "code": "NOT_FOUND",
+                "category": "NOT_FOUND",
+                "message": "Cannot GET /authenticate",
+                "retryable": false
+            },
+            "meta": {
+                "apiVersion": "v1",
+                "requestId": "unknown",
+                "timestamp": "2026-02-26T05:33:31.720Z"
+            }
+        },
+        "expectedStatus": 404,
+        "expectedResponseTime": 1000,
+        "nonEmptyFields": [
+            "meta.requestId",
+            "meta.timestamp"
+        ],
+        "validateAmounts": true,
+        "amountFields": [
+            ""
+        ],
+        "validateDataMasking": true,
+        "sensitiveFields": []
+    },
+    "Verify API rejects PUT method": {
+        "method": "PUT",
+        "url": "/auth/authenticate",
+        "params": {},
+        "requestBody": {
+            "channel": "WEB",
+            "authType": "PHONE_OTP",
+            "identifier": {
+                "phone": "9353788831",
+                "countryCode": "+91"
+            },
+            "device": {
+                "deviceId": "browser-123",
+                "platform": "WEB"
+            }
+        },
+        "expectedBody": {
+            "success": false,
+            "statusCode": 404,
+            "message": "Not Found",
+            "error": {
+                "code": "NOT_FOUND",
+                "category": "NOT_FOUND",
+                "message": "Cannot PUT /authenticate",
+                "retryable": false
+            },
+            "meta": {
+                "apiVersion": "v1",
+                "requestId": "unknown",
+                "timestamp": "2026-02-26T05:33:31.720Z"
+            }
+        },
+        "expectedStatus": 404,
+        "expectedResponseTime": 1000,
+        "nonEmptyFields": [
+            "meta.requestId",
+            "meta.timestamp"
+        ],
+        "validateAmounts": true,
+        "amountFields": [
+            ""
+        ],
+        "validateDataMasking": true,
+        "sensitiveFields": []
+    },
+    "Verify API rejects DELETE method": {
+        "method": "DELETE",
+        "url": "/auth/authenticate",
+        "params": {},
+        "requestBody": {
+            "channel": "WEB",
+            "authType": "PHONE_OTP",
+            "identifier": {
+                "phone": "9353788831",
+                "countryCode": "+91"
+            },
+            "device": {
+                "deviceId": "browser-123",
+                "platform": "WEB"
+            }
+        },
+        "expectedBody": {
+            "success": false,
+            "statusCode": 404,
+            "message": "Not Found",
+            "error": {
+                "code": "NOT_FOUND",
+                "category": "NOT_FOUND",
+                "message": "Cannot DELETE /authenticate",
+                "retryable": false
+            },
+            "meta": {
+                "apiVersion": "v1",
+                "requestId": "unknown",
+                "timestamp": "2026-02-26T05:33:31.720Z"
+            }
+        },
+        "expectedStatus": 404,
+        "expectedResponseTime": 1000,
+        "nonEmptyFields": [
+            "meta.requestId",
+            "meta.timestamp"
+        ],
+        "validateAmounts": true,
+        "amountFields": [
+            ""
+        ],
+        "validateDataMasking": true,
+        "sensitiveFields": []
+    },
+    "Verify API rejects PATCH method": {
+        "method": "PATCH",
+        "url": "/auth/authenticate",
+        "params": {},
+        "requestBody": {
+            "channel": "WEB",
+            "authType": "PHONE_OTP",
+            "identifier": {
+                "phone": "9353788831",
+                "countryCode": "+91"
+            },
+            "device": {
+                "deviceId": "browser-123",
+                "platform": "WEB"
+            }
+        },
+        "expectedBody": {
+            "success": false,
+            "statusCode": 404,
+            "message": "Not Found",
+            "error": {
+                "code": "NOT_FOUND",
+                "category": "NOT_FOUND",
+                "message": "Cannot PATCH /authenticate",
+                "retryable": false
+            },
+            "meta": {
+                "apiVersion": "v1",
+                "requestId": "unknown",
+                "timestamp": "2026-02-26T05:33:31.720Z"
+            }
+        },
+        "expectedStatus": 404,
+        "expectedResponseTime": 1000,
+        "nonEmptyFields": [
+            "meta.requestId",
+            "meta.timestamp"
+        ],
+        "validateAmounts": true,
+        "amountFields": [
+            ""
+        ],
+        "validateDataMasking": true,
+        "sensitiveFields": []
+    },
+    "Verify phone trims leading/trailing spaces": {
+        "method": "POST",
+        "url": "/auth/authenticate",
+        "params": {},
+        "requestBody": {
+            "channel": "WEB",
+            "authType": "PHONE_OTP",
+            "identifier": {
+                "phone": " 9353788831 ",
+                "countryCode": "+91"
+            },
+            "device": {
+                "deviceId": "browser-123",
+                "platform": "WEB"
+            }
+        },
+        "expectedBody": {
+            "success": false,
+            "statusCode": 400,
+            "message": "Bad Request",
+            "error": {
+                "code": "BAD_REQUEST",
+                "category": "VALIDATION_ERROR",
+                "message": "One or more fields are invalid",
+                "retryable": false,
+                "errors": [
+                    {
+                        "field": "phone",
+                        "code": "VALIDATION_FAILED",
+                        "message": "Phone number must be 10 digits starting with 6-9"
+                    }
+                ]
+            },
+            "meta": {
+                "apiVersion": "v1",
+                "requestId": "req-d5lWpbYAAQ",
+                "timestamp": "2026-02-26T05:43:35.467Z"
+            }
+        },
+        "expectedStatus": 400,
+        "expectedResponseTime": 1000,
+        "nonEmptyFields": [
+            "meta.requestId",
+            "meta.timestamp"
+        ],
+        "validateAmounts": true,
+        "amountFields": [
+            ""
+        ],
+        "validateDataMasking": true,
+        "sensitiveFields": []
+    },
+    "Verify countryCode trims whitespace": {
+        "method": "POST",
+        "url": "/auth/authenticate",
+        "params": {},
+        "requestBody": {
+            "channel": "WEB",
+            "authType": "PHONE_OTP",
+            "identifier": {
+                "phone": "9353788831",
+                "countryCode": " +91 "
+            },
+            "device": {
+                "deviceId": "browser-123",
+                "platform": "WEB"
+            }
+        },
+        "expectedBody": {
+            "success": false,
+            "statusCode": 400,
+            "message": "Bad Request",
+            "error": {
+                "code": "BAD_REQUEST",
+                "category": "VALIDATION_ERROR",
+                "message": "One or more fields are invalid",
+                "retryable": false,
+                "errors": [
+                    {
+                        "field": "invalid",
+                        "code": "VALIDATION_FAILED",
+                        "message": "Invalid country code format (e.g., +91)"
+                    }
+                ]
+            },
+            "meta": {
+                "apiVersion": "v1",
+                "requestId": "req-TeDTVWKwah",
+                "timestamp": "2026-02-26T05:51:33.015Z"
+            }
+        },
+        "expectedStatus": 400,
+        "expectedResponseTime": 1000,
+        "nonEmptyFields": [
+            "meta.requestId",
+            "meta.timestamp"
+        ],
+        "validateAmounts": true,
+        "amountFields": [
+            ""
+        ],
+        "validateDataMasking": true,
+        "sensitiveFields": []
+    },
+    "Verify channel is case-sensitive": {
+        "method": "POST",
+        "url": "/auth/authenticate",
+        "params": {},
+        "requestBody": {
+            "channel": "web",
+            "authType": "PHONE_OTP",
+            "identifier": {
+                "phone": "9353788831",
+                "countryCode": "+91"
+            },
+            "device": {
+                "deviceId": "browser-123",
+                "platform": "WEB"
+            }
+        },
+        "expectedBody": {
+            "success": false,
+            "statusCode": 400,
+            "message": "Bad Request",
+            "error": {
+                "code": "BAD_REQUEST",
+                "category": "VALIDATION_ERROR",
+                "message": "One or more fields are invalid",
+                "retryable": false,
+                "errors": [
+                    {
+                        "field": "channel",
+                        "code": "VALIDATION_FAILED",
+                        "message": "Channel must be WEB, APP"
+                    }
+                ]
+            },
+            "meta": {
+                "apiVersion": "v1",
+                "requestId": "req-ymaVAxcxB8",
+                "timestamp": "2026-02-26T06:01:14.396Z"
+            }
+        },
+        "expectedStatus": 400,
+        "expectedResponseTime": 1000,
+        "nonEmptyFields": [
+            "meta.requestId",
+            "meta.timestamp"
+        ],
+        "validateAmounts": true,
+        "amountFields": [
+            ""
+        ],
+        "validateDataMasking": true,
+        "sensitiveFields": []
+    },
+    "Verify platform is case-sensitive": {
+        "method": "POST",
+        "url": "/auth/authenticate",
+        "params": {},
+        "requestBody": {
+            "channel": "WEB",
+            "authType": "PHONE_OTP",
+            "identifier": {
+                "phone": "9353788831",
+                "countryCode": "+91"
+            },
+            "device": {
+                "deviceId": "browser-123",
+                "platform": "web"
+            }
+        },
+        "expectedBody": {
+            "success": false,
+            "statusCode": 400,
+            "message": "Bad Request",
+            "error": {
+                "code": "BAD_REQUEST",
+                "category": "VALIDATION_ERROR",
+                "message": "One or more fields are invalid",
+                "retryable": false,
+                "errors": [
+                    {
+                        "field": "platform",
+                        "code": "VALIDATION_FAILED",
+                        "message": "Platform must be ANDROID, IOS, or WEB"
+                    }
+                ]
+            },
+            "meta": {
+                "apiVersion": "v1",
+                "requestId": "req-5Ub-yO3RWO",
+                "timestamp": "2026-02-26T06:06:13.963Z"
+            }
+        },
+        "expectedStatus": 400,
+        "expectedResponseTime": 1000,
+        "nonEmptyFields": [
+            "meta.requestId",
+            "meta.timestamp"
+        ],
+        "validateAmounts": true,
+        "amountFields": [
+            ""
+        ],
+        "validateDataMasking": true,
+        "sensitiveFields": []
+    },
+    "Verify authType is case-sensitive": {
+        "method": "POST",
+        "url": "/auth/authenticate",
+        "params": {},
+        "requestBody": {
+            "channel": "WEB",
+            "authType": "pHONE_OTP",
+            "identifier": {
+                "phone": "9353788831",
+                "countryCode": "+91"
+            },
+            "device": {
+                "deviceId": "browser-123",
+                "platform": "WEB"
+            }
+        },
+        "expectedBody": {
+            "success": false,
+            "statusCode": 400,
+            "message": "Bad Request",
+            "error": {
+                "code": "BAD_REQUEST",
+                "category": "VALIDATION_ERROR",
+                "message": "One or more fields are invalid",
+                "retryable": false,
+                "errors": [
+                    {
+                        "field": "auth",
+                        "code": "VALIDATION_FAILED",
+                        "message": "Auth type must be EMAIL_PASSWORD, PHONE_PASSWORD, PHONE_OTP, or PHONE_MPIN"
+                    }
+                ]
+            },
+            "meta": {
+                "apiVersion": "v1",
+                "requestId": "req-qLv9ciKtOy",
+                "timestamp": "2026-02-26T06:09:26.091Z"
+            }
+        },
+        "expectedStatus": 400,
+        "expectedResponseTime": 1000,
+        "nonEmptyFields": [
+            "meta.requestId",
+            "meta.timestamp"
+        ],
+        "validateAmounts": true,
+        "amountFields": [
+            ""
+        ],
+        "validateDataMasking": true,
+        "sensitiveFields": []
+    },
+    "Verify SQL injection attempt in phone is rejected": {
+        "method": "POST",
+        "url": "/auth/authenticate",
+        "params": {},
+        "requestBody": {
+            "channel": "WEB",
+            "authType": "PHONE_OTP",
+            "identifier": {
+                "phone": "9353788832 OR 1==1",
+                "countryCode": "+91"
+            },
+            "device": {
+                "deviceId": "browser-123",
+                "platform": "WEB"
+            }
+        },
+        "expectedBody": {
+            "success": false,
+            "statusCode": 400,
+            "message": "Bad Request",
+            "error": {
+                "code": "BAD_REQUEST",
+                "category": "VALIDATION_ERROR",
+                "message": "One or more fields are invalid",
+                "retryable": false,
+                "errors": [
+                    {
+                        "field": "phone",
+                        "code": "VALIDATION_FAILED",
+                        "message": "Phone number must be 10 digits starting with 6-9"
+                    }
+                ]
+            },
+            "meta": {
+                "apiVersion": "v1",
+                "requestId": "req-vDMtUkUDg2",
+                "timestamp": "2026-02-26T06:28:30.483Z"
+            }
+        },
+        "expectedStatus": 400,
+        "expectedResponseTime": 1000,
+        "nonEmptyFields": [
+            "meta.requestId",
+            "meta.timestamp"
+        ],
+        "validateAmounts": true,
+        "amountFields": [
+            ""
+        ],
+        "validateDataMasking": true,
+        "sensitiveFields": []
+    },
+    "Verify script injection in phone rejected": {
+        "method": "POST",
+        "url": "/auth/authenticate",
+        "params": {},
+        "requestBody": {
+            "channel": "WEB",
+            "authType": "PHONE_OTP",
+            "identifier": {
+                "phone": "<script>alert(1)</script>",
+                "countryCode": "+91"
+            },
+            "device": {
+                "deviceId": "browser-123",
+                "platform": "WEB"
+            }
+        },
+        "expectedBody": {
+            "success": false,
+            "statusCode": 400,
+            "message": "Bad Request",
+            "error": {
+                "code": "BAD_REQUEST",
+                "category": "VALIDATION_ERROR",
+                "message": "One or more fields are invalid",
+                "retryable": false,
+                "errors": [
+                    {
+                        "field": "phone",
+                        "code": "VALIDATION_FAILED",
+                        "message": "Phone number must be 10 digits starting with 6-9"
+                    }
+                ]
+            },
+            "meta": {
+                "apiVersion": "v1",
+                "requestId": "req-Z1beaFMx1h",
+                "timestamp": "2026-02-26T06:32:56.568Z"
+            }
+        },
+        "expectedStatus": 400,
+        "expectedResponseTime": 1000,
+        "nonEmptyFields": [
+            "meta.requestId",
+            "meta.timestamp"
+        ],
+        "validateAmounts": true,
+        "amountFields": [
+            ""
+        ],
+        "validateDataMasking": true,
+        "sensitiveFields": []
+    },
+    "Verify phase always equals UNIFIED_OTP_SEND for PHONE_OTP": {
+        "method": "POST",
+        "url": "/auth/authenticate",
+        "params": {},
+        "requestBody": {
+            "channel": "WEB",
+            "authType": "PHONE_OTP",
+            "identifier": {
+                "phone": "9353788833",
+                "countryCode": "+91"
+            },
+            "device": {
+                "deviceId": "browser-123",
+                "platform": "WEB"
+            }
+        },
+        "expectedBody": {
+            "success": true,
+            "statusCode": 200,
+            "message": "Request processed successfully",
+            "data": {
+                "phase": "UNIFIED_OTP_SEND",
+                "otpSession": "OTP_MM33GVQR_UT79KUEEOVXDZ1KJ",
+                "expiresAt": "2026-02-26T06:45:46.515Z",
+                "expiresInSeconds": 300,
+                "message": "Please verify your phone number to create an account.",
+                "phone": "+919353788833",
+                "userState": {
+                    "isNewUser": true,
+                    "hasMpin": false,
+                    "hasPassword": false,
+                    "nextStep": "VERIFY_PHONE",
+                    "flowCode": "AUTH_WEB",
+                    "currentStepCode": "PENDING"
+                },
+                "decision": {
+                    "userExists": false,
+                    "suggestedFlow": "SIGNUP",
+                    "nextStep": "VERIFY_PHONE",
+                    "requiresOtp": true,
+                    "hasPassword": false,
+                    "hasMpin": false
+                }
+            },
+            "meta": {
+                "apiVersion": "v1",
+                "requestId": "req-FH0g1LCAYw",
+                "timestamp": "2026-02-26T06:40:46.734Z"
+            }
+        },
+        "expectedStatus": 200,
+        "expectedResponseTime": 1000,
+        "nonEmptyFields": [
+            "meta.requestId",
+            "meta.timestamp",
+            "data.otpSession",
+            "data.expiresAt"
+        ],
+        "validateAmounts": true,
+        "amountFields": [
+            ""
+        ],
+        "validateDataMasking": true,
+        "sensitiveFields": []
+    },
+    "Verify data.phone always includes +91 prefix": {
+        "method": "POST",
+        "url": "/auth/authenticate",
+        "params": {},
+        "requestBody": {
+            "channel": "WEB",
+            "authType": "PHONE_OTP",
+            "identifier": {
+                "phone": "9353788833",
+                "countryCode": "+91"
+            },
+            "device": {
+                "deviceId": "browser-123",
+                "platform": "WEB"
+            }
+        },
+        "expectedBody": {
+            "success": true,
+            "statusCode": 200,
+            "message": "Request processed successfully",
+            "data": {
+                "phase": "UNIFIED_OTP_SEND",
+                "otpSession": "OTP_MM33GVQR_UT79KUEEOVXDZ1KJ",
+                "expiresAt": "2026-02-26T06:45:46.515Z",
+                "expiresInSeconds": 300,
+                "message": "Please verify your phone number to create an account.",
+                "phone": "+919353788833",
+                "userState": {
+                    "isNewUser": true,
+                    "hasMpin": false,
+                    "hasPassword": false,
+                    "nextStep": "VERIFY_PHONE",
+                    "flowCode": "AUTH_WEB",
+                    "currentStepCode": "PENDING"
+                },
+                "decision": {
+                    "userExists": false,
+                    "suggestedFlow": "SIGNUP",
+                    "nextStep": "VERIFY_PHONE",
+                    "requiresOtp": true,
+                    "hasPassword": false,
+                    "hasMpin": false
+                }
+            },
+            "meta": {
+                "apiVersion": "v1",
+                "requestId": "req-FH0g1LCAYw",
+                "timestamp": "2026-02-26T06:40:46.734Z"
+            }
+        },
+        "expectedStatus": 200,
+        "expectedResponseTime": 1000,
+        "nonEmptyFields": [
+            "meta.requestId",
+            "meta.timestamp",
+            "data.otpSession",
+            "data.expiresAt"
+        ],
+        "validateAmounts": true,
+        "amountFields": [
+            ""
+        ],
+        "validateDataMasking": true,
+        "sensitiveFields": []
+    },
+    "Verify response never exposes raw OTP": {
+        "method": "POST",
+        "url": "/auth/authenticate",
+        "params": {},
+        "requestBody": {
+            "channel": "WEB",
+            "authType": "PHONE_OTP",
+            "identifier": {
+                "phone": "9353788833",
+                "countryCode": "+91"
+            },
+            "device": {
+                "deviceId": "browser-123",
+                "platform": "WEB"
+            }
+        },
+        "expectedBody": {
+            "success": true,
+            "statusCode": 200,
+            "message": "Request processed successfully",
+            "data": {
+                "phase": "UNIFIED_OTP_SEND",
+                "otpSession": "OTP_MM33GVQR_UT79KUEEOVXDZ1KJ",
+                "expiresAt": "2026-02-26T06:45:46.515Z",
+                "expiresInSeconds": 300,
+                "message": "Please verify your phone number to create an account.",
+                "phone": "+919353788833",
+                "userState": {
+                    "isNewUser": true,
+                    "hasMpin": false,
+                    "hasPassword": false,
+                    "nextStep": "VERIFY_PHONE",
+                    "flowCode": "AUTH_WEB",
+                    "currentStepCode": "PENDING"
+                },
+                "decision": {
+                    "userExists": false,
+                    "suggestedFlow": "SIGNUP",
+                    "nextStep": "VERIFY_PHONE",
+                    "requiresOtp": true,
+                    "hasPassword": false,
+                    "hasMpin": false
+                }
+            },
+            "meta": {
+                "apiVersion": "v1",
+                "requestId": "req-FH0g1LCAYw",
+                "timestamp": "2026-02-26T06:40:46.734Z"
+            }
+        },
+        "expectedStatus": 200,
+        "expectedResponseTime": 1000,
+        "nonEmptyFields": [
+            "meta.requestId",
+            "meta.timestamp",
+            "data.otpSession",
+            "data.expiresAt"
+        ],
+        "validateAmounts": true,
+        "amountFields": [
+            ""
+        ],
+        "validateDataMasking": true,
+        "sensitiveFields": []
+    },
+    "Verify response never exposes password": {
+        "method": "POST",
+        "url": "/auth/authenticate",
+        "params": {},
+        "requestBody": {
+            "channel": "WEB",
+            "authType": "PHONE_OTP",
+            "identifier": {
+                "phone": "9353788833",
+                "countryCode": "+91"
+            },
+            "device": {
+                "deviceId": "browser-123",
+                "platform": "WEB"
+            }
+        },
+        "expectedBody": {
+            "success": true,
+            "statusCode": 200,
+            "message": "Request processed successfully",
+            "data": {
+                "phase": "UNIFIED_OTP_SEND",
+                "otpSession": "OTP_MM38FJ5H_IWUTZEICC1S_IZ8_",
+                "expiresAt": "2026-02-26T09:04:41.621Z",
+                "expiresInSeconds": 300,
+                "message": "Please verify your phone number to create an account.",
+                "phone": "+919353788833",
+                "userState": {
+                    "isNewUser": true,
+                    "hasMpin": false,
+                    "hasPassword": false,
+                    "nextStep": "VERIFY_PHONE",
+                    "flowCode": "AUTH_WEB",
+                    "currentStepCode": "PENDING"
+                },
+                "decision": {
+                    "userExists": false,
+                    "suggestedFlow": "SIGNUP",
+                    "nextStep": "VERIFY_PHONE",
+                    "requiresOtp": true,
+                    "hasPassword": false,
+                    "hasMpin": false
+                }
+            },
+            "meta": {
+                "apiVersion": "v1",
+                "requestId": "req-Oe2dxYEnY4",
+                "timestamp": "2026-02-26T08:59:41.840Z"
+            }
+        },
+        "expectedStatus": 200,
+        "expectedResponseTime": 1000,
+        "nonEmptyFields": [
+            "meta.requestId",
+            "meta.timestamp",
+            "data.otpSession",
+            "data.expiresAt"
+        ],
+        "validateAmounts": true,
+        "amountFields": [
+            ""
+        ],
+        "validateDataMasking": true,
+        "sensitiveFields": []
+    },
+    "Verify OTP with valid otpSession & OTP": {
+        "method": "POST",
+        "url": "/auth/authenticate",
+        "params": {},
+        "requestBody": {
+            "channel": "WEB",
+            "authType": "PHONE_OTP",
+            "identifier": {},
+            "credential": {
+                "otp": "123456",
+                "otpSession": "{{otpSession}}"
+            },
+            "device": {
+                "deviceId": "browser-123",
+                "platform": "WEB"
+            }
+        },
+        "expectedBody": {
+            "success": true,
+            "statusCode": 200,
+            "message": "Request processed successfully",
+            "data": {
+                "phase": "UNIFIED_OTP_VERIFY",
+                "verificationToken": "eyJwaG9uZSI6Iis5MTkzNTM3ODg4MzMiLCJ2ZXJpZmllZCI6dHJ1ZSwidGltZXN0YW1wIjoxNzcyMTEwNDM0ODE3fQ.S65GW3xOk1VDh1JaK1RZWSNq7zopD2bVTjSPtYbiIfs",
+                "userState": {
+                    "isNewUser": true,
+                    "hasMpin": false,
+                    "hasPassword": false,
+                    "nextStep": "SET_PASSWORD",
+                    "flowCode": "AUTH_WEB",
+                    "currentStepCode": "OTP_VERIFIED"
+                },
+                "decision": {
+                    "userExists": true,
+                    "suggestedFlow": "SIGNUP",
+                    "nextStep": "SET_PASSWORD",
+                    "hasPassword": false,
+                    "hasMpin": false
+                },
+                "message": "Welcome! Please set your password to continue."
+            },
+            "meta": {
+                "apiVersion": "v1",
+                "requestId": "req-Gu3gd16t9s",
+                "timestamp": "2026-02-26T12:53:54.817Z"
+            }
+        },
+        "expectedStatus": 200,
+        "expectedResponseTime": 1000,
+        "nonEmptyFields": [
+            "meta.requestId",
+            "meta.timestamp",
+            "data.verificationToken"
+        ],
+        "validateAmounts": true,
+        "amountFields": [
+            ""
+        ],
+        "validateDataMasking": true,
+        "sensitiveFields": []
+    },
+    "Verify OTP with invalid otpSession & OTP": {
+        "method": "POST",
+        "url": "/auth/authenticate",
+        "params": {},
+        "requestBody": {
+            "channel": "WEB",
+            "authType": "PHONE_OTP",
+            "identifier": {},
+            "credential": {
+                "otp": "123456",
+                "otpSession": "{{otpSession}}"
+            },
+            "device": {
+                "deviceId": "browser-123",
+                "platform": "WEB"
+            }
+        },
+        "expectedBody": {
+            "success": false,
+            "statusCode": 400,
+            "message": "OTP session not found or expired",
+            "error": {
+                "code": "BAD_REQUEST",
+                "category": "VALIDATION_ERROR",
+                "message": "OTP session not found or expired",
+                "retryable": false
+            },
+            "meta": {
+                "apiVersion": "v1",
+                "requestId": "req-ON5T9sIouM",
+                "timestamp": "2026-02-26T13:17:03.746Z"
+            }
+        },
+        "expectedStatus": 400,
+        "expectedResponseTime": 1000,
+        "nonEmptyFields": [
+            "meta.requestId",
+            "meta.timestamp"
+            
+        ],
+        "validateAmounts": true,
+        "amountFields": [
+            ""
+        ],
+        "validateDataMasking": true,
+        "sensitiveFields": []
+    },
+    "Verify OTP with expired otpSession": {
+        "method": "POST",
+        "url": "/auth/authenticate",
+        "params": {},
+        "requestBody": {
+            "channel": "WEB",
+            "authType": "PHONE_OTP",
+            "identifier": {},
+            "credential": {
+                "otp": "123456",
+                "otpSession": "{{otpSession}}"
+            },
+            "device": {
+                "deviceId": "browser-123",
+                "platform": "WEB"
+            }
+        },
+        "expectedBody": {
+            "success": false,
+            "statusCode": 400,
+            "message": "OTP session not found or expired",
+            "error": {
+                "code": "BAD_REQUEST",
+                "category": "VALIDATION_ERROR",
+                "message": "OTP session not found or expired",
+                "retryable": false
+            },
+            "meta": {
+                "apiVersion": "v1",
+                "requestId": "req-ON5T9sIouM",
+                "timestamp": "2026-02-26T13:17:03.746Z"
+            }
+        },
+        "expectedStatus": 400,
+        "expectedResponseTime": 1000,
+        "nonEmptyFields": [
+            "meta.requestId",
+            "meta.timestamp"
+            
         ],
         "validateAmounts": true,
         "amountFields": [
