@@ -3,6 +3,8 @@ name: Claude Code Review
 on:
   pull_request:
     types: [opened, synchronize, reopened]
+  issue_comment:
+    types: [created]
 
 permissions:
   contents: read
@@ -10,14 +12,34 @@ permissions:
 
 jobs:
   review:
-    # Skip for fork PRs (security - they can't access secrets)
-    if: github.event.pull_request.head.repo.full_name == github.repository
+    # Run on PR events OR when someone comments "@claude review" on a PR
+    if: |
+      (github.event_name == 'pull_request' &&
+       github.event.pull_request.head.repo.full_name == github.repository) ||
+      (github.event_name == 'issue_comment' &&
+       github.event.issue.pull_request &&
+       contains(github.event.comment.body, '@claude review'))
     runs-on: ubuntu-latest
     steps:
+      - name: Get PR info for comment trigger
+        id: pr_info
+        if: github.event_name == 'issue_comment'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const pr = await github.rest.pulls.get({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: context.issue.number
+            });
+            core.setOutput('ref', pr.data.head.ref);
+            core.setOutput('sha', pr.data.head.sha);
+
       - name: Checkout code
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+          ref: ${{ steps.pr_info.outputs.ref || github.head_ref }}
 
       - name: Claude Code Review
         id: claude_review
@@ -93,11 +115,18 @@ jobs:
             // Wait a moment for Claude's comment to be posted
             await new Promise(resolve => setTimeout(resolve, 5000));
 
+            // Get PR number (works for both PR events and comment events)
+            const prNumber = context.issue?.number || context.payload.pull_request?.number;
+            if (!prNumber) {
+              console.log('Could not determine PR number');
+              return;
+            }
+
             // Get PR comments to check Claude's review
             const comments = await github.rest.issues.listComments({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              issue_number: context.issue.number,
+              issue_number: prNumber,
               per_page: 20
             });
 
@@ -108,7 +137,14 @@ jobs:
             );
 
             if (claudeComment) {
-              const prAuthor = context.payload.pull_request.user.login;
+              // Get PR details to find author
+              const pr = await github.rest.pulls.get({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                pull_number: prNumber
+              });
+              const prAuthor = pr.data.user.login;
+
               const reviewers = ['sreedeepnarayan', 'gauravpaywize']
                 .filter(r => r.toLowerCase() !== prAuthor.toLowerCase());
 
@@ -117,7 +153,7 @@ jobs:
                   await github.rest.pulls.requestReviewers({
                     owner: context.repo.owner,
                     repo: context.repo.repo,
-                    pull_number: context.issue.number,
+                    pull_number: prNumber,
                     reviewers: reviewers
                   });
                   console.log(`Review requested from: ${reviewers.join(', ')}`);
