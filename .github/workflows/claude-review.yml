@@ -9,10 +9,11 @@ on:
 permissions:
   contents: read
   pull-requests: write
+  issues: write
+  id-token: write
 
 jobs:
   review:
-    # Run on PR events OR when someone comments "@claude review" on a PR
     if: |
       (github.event_name == 'pull_request' &&
        github.event.pull_request.head.repo.full_name == github.repository) ||
@@ -33,135 +34,47 @@ jobs:
               pull_number: context.issue.number
             });
             core.setOutput('ref', pr.data.head.ref);
-            core.setOutput('sha', pr.data.head.sha);
+            core.setOutput('number', context.issue.number);
 
       - name: Checkout code
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0
+          fetch-depth: 1
           ref: ${{ steps.pr_info.outputs.ref || github.head_ref }}
 
       - name: Claude Code Review
-        id: claude_review
         uses: anthropics/claude-code-action@v1
         with:
           anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
-          model: "claude-sonnet-4-20250514"
-          timeout_minutes: 10
+          trigger_phrase: "@claude review"
           prompt: |
-            You are reviewing code in a multi-repo environment. Auto-detect the tech stack from:
-            - File extensions and imports
-            - package.json / requirements.txt / composer.json / go.mod
+            REPO: ${{ github.repository }}
+            PR NUMBER: ${{ steps.pr_info.outputs.number || github.event.pull_request.number }}
 
             Review this PR for:
+            - Security vulnerabilities (injection, auth bypasses, secrets in code)
+            - Performance issues (N+1 queries, memory leaks)
+            - Code quality (logic bugs, missing error handling)
+            - Optimization opportunities
 
-            ## Security (Critical)
-            - Injection vulnerabilities (SQL, XSS, command injection)
-            - Authentication/authorization bypasses
-            - Secrets or credentials in code
-            - Insecure dependencies
+            Focus on significant issues only. Skip style nitpicks.
 
-            ## Optimization
-            - Redundant computations that could be cached
-            - Unnecessary API calls or database queries
-            - React: Missing useMemo/useCallback for expensive operations
-            - Node.js: Blocking operations that should be async
-            - Database: Missing WHERE clauses, unindexed queries
-            - Bundle size: Large imports that could be tree-shaken
+            HOW TO POST YOUR REVIEW:
+            1. Use `mcp__github_inline_comment__create_inline_comment` to add comments on specific lines of code
+            2. Use `gh pr comment` for a summary comment
 
-            ## Performance
-            - N+1 queries (especially in ORMs like Sequelize, Mongoose, Eloquent)
-            - Memory leaks (unclosed connections, event listeners, intervals)
-            - Unoptimized loops and data structures
+            FORMAT YOUR SUMMARY AS:
+            ## PR Review Summary
 
-            ## Code Quality
-            - Logic bugs and edge cases
-            - Missing error handling
-            - Framework-specific anti-patterns:
-              - React: Prop drilling, unnecessary re-renders
-              - Node/Express: Unhandled promise rejections
-              - Laravel: N+1 queries, missing eager loading
-              - Python: Mutable default arguments
+            ### Critical Issues
+            - Issue 1 with file:line reference
 
-            FORMAT YOUR RESPONSE EXACTLY AS:
+            ### Bugs
+            - Bug 1 with file:line reference
 
-            If issues found:
-            ## Issues Found
+            ### Suggestions
+            - Suggestion 1
 
-            ### [Category] (N issues)
-            <details>
-            <summary>[Brief title] in `filename:line`</summary>
-
-            **Issue:** [Description]
-            **Fix:** [How to fix with code example if applicable]
-            </details>
-
-            If NO issues:
-            ## Approved
-
-            No significant issues found. Code looks good.
-
-            RULES:
-            - Maximum 5 issues total (prioritize security first)
-            - Use <details> tags for collapsibility
-            - Include file:line references
-            - Skip style/formatting nitpicks
-            - Be concise but actionable
-
-      - name: Request Review if Issues Found
-        uses: actions/github-script@v7
-        with:
-          script: |
-            // Wait a moment for Claude's comment to be posted
-            await new Promise(resolve => setTimeout(resolve, 5000));
-
-            // Get PR number (works for both PR events and comment events)
-            const prNumber = context.issue?.number || context.payload.pull_request?.number;
-            if (!prNumber) {
-              console.log('Could not determine PR number');
-              return;
-            }
-
-            // Get PR comments to check Claude's review
-            const comments = await github.rest.issues.listComments({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              issue_number: prNumber,
-              per_page: 20
-            });
-
-            // Look for Claude's "Issues Found" marker in recent comments
-            const claudeComment = comments.data.find(c =>
-              c.user.login === 'github-actions[bot]' &&
-              c.body.includes('## Issues Found')
-            );
-
-            if (claudeComment) {
-              // Get PR details to find author
-              const pr = await github.rest.pulls.get({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                pull_number: prNumber
-              });
-              const prAuthor = pr.data.user.login;
-
-              const reviewers = ['sreedeepnarayan', 'gauravpaywize']
-                .filter(r => r.toLowerCase() !== prAuthor.toLowerCase());
-
-              if (reviewers.length > 0) {
-                try {
-                  await github.rest.pulls.requestReviewers({
-                    owner: context.repo.owner,
-                    repo: context.repo.repo,
-                    pull_number: prNumber,
-                    reviewers: reviewers
-                  });
-                  console.log(`Review requested from: ${reviewers.join(', ')}`);
-                } catch (error) {
-                  console.log(`Could not request reviewers: ${error.message}`);
-                  // Still succeed - reviewers might not have access to all repos
-                }
-              }
-            } else {
-              console.log('No issues found by Claude, skipping review request');
-            }
+            Use proper markdown formatting with headers, bullet points, and code blocks.
+          claude_args: |
+            --allowedTools "mcp__github_inline_comment__create_inline_comment,Bash(gh pr comment:*),Bash(gh pr diff:*),Bash(gh pr view:*)"
